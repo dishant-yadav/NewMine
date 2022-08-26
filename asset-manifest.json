@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/NewsMine/static/css/main.073c9b0a.css",
+    "main.js": "/NewsMine/static/js/main.463c385e.js",
+    "index.html": "/NewsMine/index.html",
+    "main.073c9b0a.css.map": "/NewsMine/static/css/main.073c9b0a.css.map",
+    "main.463c385e.js.map": "/NewsMine/static/js/main.463c385e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.463c385e.js"
+  ]
+}
