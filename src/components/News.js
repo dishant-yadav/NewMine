@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import NewsItem from "./NewsItem";
 // import Spinner from "./Spinner";
+import logo from "./logo.png";
 import PropTypes from "prop-types";
 
 export class News extends Component {
@@ -91,9 +92,13 @@ export class News extends Component {
               return (
                 <div className="col-md-4" key={element.url}>
                   <NewsItem
-                    title={element.title ? element.title : ""}
-                    description={element.description ? element.description : ""}
-                    imageUrl={element.urlToImage}
+                    title={element.title}
+                    description={
+                      element.description
+                        ? element.description.slice(0, 80)
+                        : "No desciption Provided"
+                    }
+                    imageUrl={element.urlToImage ? element.urlToImage : logo}
                     newsUrl={element.url}
                   />
                 </div>
@@ -102,8 +107,7 @@ export class News extends Component {
         </div>
         <br />
         <br />
-        <br />
-        <div className="container d-flex justify-content-between my-5">
+        <div className="container d-flex justify-content-between">
           <button
             disabled={this.state.page <= 1}
             type="button"
