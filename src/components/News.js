@@ -1,100 +1,122 @@
 import React, { Component } from "react";
 import NewsItem from "./NewsItem";
-import "./styles/News.css";
+// import Spinner from "./Spinner";
+import PropTypes from "prop-types";
 
-export default class News extends Component {
+export class News extends Component {
+  static defaultProps = {
+    country: "in",
+    pageSize: 6,
+    category: "general",
+  };
+
+  static propTypes = {
+    country: PropTypes.string,
+    pageSize: PropTypes.number,
+    category: PropTypes.string,
+  };
+
   constructor() {
     super();
-    // console.log("This is a constructor");
     this.state = {
       articles: [],
+      loading: false,
       page: 1,
-      totalResults: 20,
     };
   }
 
   async componentDidMount() {
-    const url =
-      "https://newsapi.org/v2/top-headlines?country=in&apiKey=a3e2db6c19b747118416e93a3f7317d4&page=1&pagesize=21";
-    const data = await fetch(url);
-    const parrsedData = await data.json();
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=dbe57b028aeb41e285a226a94865f7a7&page=1&pageSize=${this.props.pageSize}`;
+    this.setState({ loading: true });
+    let data = await fetch(url);
+    let parsedData = await data.json();
+    console.log(parsedData);
     this.setState({
-      articles: parrsedData.articles,
-      totalResults: parrsedData.totalResults,
+      articles: parsedData.articles,
+      totalResults: parsedData.totalResults,
+      loading: false,
     });
   }
 
-  handleNextClick = async () => {
-    if (this.state.page + 1 > Math.ceil(this.state.totalResults / 21)) {
-      window.alert("No futher pages");
-    } else {
-      const url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=a3e2db6c19b747118416e93a3f7317d4&page=${
-        this.state.page + 1
-      }&pagesize=21`;
-      const data = await fetch(url);
-      const parrsedData = await data.json();
-      this.setState({
-        page: this.state.page + 1,
-        articles: parrsedData.articles,
-      });
+  handlePrevClick = async () => {
+    console.log("Previous");
 
-    }
+    let url = `https://newsapi.org/v2/top-headlines?country=${
+      this.props.country
+    }&category=${
+      this.props.category
+    }&apiKey=dbe57b028aeb41e285a226a94865f7a7&page=${
+      this.state.page - 1
+    }&pageSize=${this.props.pageSize}`;
+    // this.setState({ loading: true });
+    let data = await fetch(url);
+    let parsedData = await data.json();
+    // console.log(parsedData);
+    this.setState({
+      page: this.state.page - 1,
+      articles: parsedData.articles,
+      loading: false,
+    });
   };
 
-  handlePrevClick = async () => {
-    if (this.state.page - 1 > Math.ceil(this.state.totalResults / 21)) {
-      window.alert("No futher pages");
-    } else {
-      const url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=a3e2db6c19b747118416e93a3f7317d4&page=${
-        this.state.page - 1
-      }&pagesize=21`;
-      const data = await fetch(url);
-      const parrsedData = await data.json();
-      this.setState({
-        page: this.state.page - 1,
-        articles: parrsedData.articles,
-      });
-    }
+  handleNextClick = async () => {
+    console.log("Next");
+
+    let url = `https://newsapi.org/v2/top-headlines?country=${
+      this.props.country
+    }&category=${
+      this.props.category
+    }&apiKey=dbe57b028aeb41e285a226a94865f7a7&page=${
+      this.state.page + 1
+    }&pageSize=${this.props.pageSize}`;
+    // this.setState({ loading: true });
+    let data = await fetch(url);
+    let parsedData = await data.json();
+    this.setState({
+      page: this.state.page + 1,
+      articles: parsedData.articles,
+      loading: false,
+    });
   };
 
   render() {
     return (
-      <div className="container">
-        <h2>Top HeadLines Today</h2>
+      <div className="container my-3">
+        <h1 className="text-center" style={{ margin: "35px 0px" }}>
+          NewsMonkey - Top Headlines
+        </h1>
         <div className="row">
-          {this.state.articles.map((elem) => {
-            return (
-              <div className="col-md-4" key={elem.url}>
-                <NewsItem
-                  title={elem.title.slice(0, 45)}
-                  description={
-                    elem.description != null
-                      ? elem.description.slice(0, 80) + "..."
-                      : ""
-                  }
-                  imageUrl={
-                    elem.urlToImage != null
-                      ? elem.urlToImage
-                      : "https://images.moneycontrol.com/static-mcnews/2022/08/Nokia-2660-Flip-770x433.jpg"
-                  }
-                  newUrl={elem.url}
-                />
-              </div>
-            );
-          })}
+          {!this.state.loading &&
+            this.state.articles.map((element) => {
+              return (
+                <div className="col-md-4" key={element.url}>
+                  <NewsItem
+                    title={element.title ? element.title : ""}
+                    description={element.description ? element.description : ""}
+                    imageUrl={element.urlToImage}
+                    newsUrl={element.url}
+                  />
+                </div>
+              );
+            })}
         </div>
-        <div className="container d-flex justify-content-between">
+        <div className="container d-flex justify-content-between my-5">
           <button
             disabled={this.state.page <= 1}
-            className="btn btn-warning btn-lg"
-            id="prevBtn"
+            type="button"
+            className="btn btn-dark"
             onClick={this.handlePrevClick}
           >
-            &larr; Prev
+            {" "}
+            &larr; Previous
           </button>
           <button
-            className="btn btn-warning btn-lg"
-            id="nextBtn"
+            disabled={
+              this.state.page + 1 >
+              Math.ceil(this.state.totalResults / this.props.pageSize)
+            }
+            type="button"
+            className="btn btn-dark"
             onClick={this.handleNextClick}
           >
             Next &rarr;
@@ -104,3 +126,5 @@ export default class News extends Component {
     );
   }
 }
+
+export default News;

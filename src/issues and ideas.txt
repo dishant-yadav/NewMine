@@ -1,0 +1,8 @@
+Issues
+
+To add another api key when the first gets exhausted
+https://stackoverflow.com/questions/49725012/handling-response-status-using-fetch-in-react-js
+
+Ideas
+
+Create a reader mode tool like firefox with the functionalities present there
