@@ -17,17 +17,20 @@ export class News extends Component {
     category: PropTypes.string,
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       articles: [],
       loading: false,
       page: 1,
     };
+    const suffix = " News || NewsMine - Best News App";
+    document.title =
+      props.category[0].toUpperCase() + props.category.slice(1) + suffix;
   }
 
   async updateNews() {
-    let url = `https://newsapi.org/v2/top-headlines?country=${
+    const url = `https://newsapi.org/v2/top-headlines?country=${
       this.props.country
     }&category=${
       this.props.category
@@ -37,7 +40,6 @@ export class News extends Component {
     this.setState({ loading: true });
     let data = await fetch(url);
     let parsedData = await data.json();
-    // console.log(parsedData);
     this.setState({
       articles: parsedData.articles,
       loading: false,
@@ -64,8 +66,17 @@ export class News extends Component {
   render() {
     return (
       <div className="container my-3">
-        <h1 className="text-center" style={{ margin: "35px 0px" }}>
-          NewsMonkey - Top Headlines
+        <h1
+          className="text-center"
+          style={{
+            margin: "35px 0px",
+            textDecoration: "underline",
+          }}
+        >
+          Top headlines from{" "}
+          {`${
+            this.props.category[0].toUpperCase() + this.props.category.slice(1)
+          }`}
         </h1>
         {this.state.loading && <Spinner />}
         <div className="row">
