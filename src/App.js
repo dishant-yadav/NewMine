@@ -9,6 +9,7 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
+          <Route exact path="/NewsMine" element={<News key="homepage" />} />
           <Route exact path="/" element={<News key="home" />} />
           <Route
             exact
