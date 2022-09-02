@@ -13,11 +13,6 @@ function App() {
           <Route exact path="/" element={<News key="home" />} />
           <Route
             exact
-            path="/general"
-            element={<News key="general" category="general" />}
-          />
-          <Route
-            exact
             path="/business"
             element={<News key="business" category="business" />}
           />
