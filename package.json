@@ -10,10 +10,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-infinite-scroll-component": "^6.1.0",
-<<<<<<< HEAD
-=======
     "react-router-dom": "^6.3.0",
->>>>>>> 7f70b177445eb92d781512c71d51f906843ef360
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
