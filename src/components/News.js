@@ -27,6 +27,7 @@ export class News extends Component {
     const suffix = " News || NewsMine - Best News App";
     document.title =
       props.category[0].toUpperCase() + props.category.slice(1) + suffix;
+    console.log(this.state.totalResults);
   }
 
   async updateNews() {
@@ -44,14 +45,14 @@ export class News extends Component {
   }
 
   handlePrevClick = async () => {
-    this.setState({
+    await this.setState({
       page: this.state.page - 1,
     });
     this.updateNews();
   };
 
   handleNextClick = async () => {
-    this.setState({
+    await this.setState({
       page: this.state.page + 1,
     });
     this.updateNews();
