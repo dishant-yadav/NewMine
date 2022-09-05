@@ -10,12 +10,13 @@ export class News extends Component {
     country: "in",
     pageSize: 6,
     category: "general",
+    apikey: "fa64cb3ab7b848c0b58c606f080de280",
   };
-
   static propTypes = {
     country: PropTypes.string,
     pageSize: PropTypes.number,
     category: PropTypes.string,
+    apikey: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -32,7 +33,7 @@ export class News extends Component {
   }
 
   async updateNews() {
-    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=a3e2db6c19b747118416e93a3f7317d4&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apikey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
     this.setState({ loading: true });
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -45,15 +46,14 @@ export class News extends Component {
 
   async componentDidMount() {
     this.updateNews();
+    this.setState({ page: this.state.page + 1 });
   }
 
   fetchMoreData = async () => {
     await this.setState({ page: this.state.page + 1 });
-    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=a3e2db6c19b747118416e93a3f7317d4&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apikey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
     let data = await fetch(url);
     let parsedData = await data.json();
-    console.log("artilces ", this.state.articles);
-    console.log("parsed", parsedData.articles);
     await this.setState({
       articles: this.state.articles.concat(parsedData.articles),
       totalResults: parsedData.totalResults,
@@ -71,18 +71,18 @@ export class News extends Component {
           }}
         >
           Top headlines from{" "}
-          {`${
-            this.props.category[0].toUpperCase() + this.props.category.slice(1)
-          }`}
+          {`${this.props.category[0].toUpperCase() + this.props.category.slice(1)
+            }`}
         </h1>
         {this.state.loading && <Spinner />}
         <InfiniteScroll
           dataLength={this.state.articles.length}
           next={this.fetchMoreData}
-          hasMore={this.state.articles.length <= this.state.totalResults}
+          hasMore={this.state.articles.length - 6 !== this.state.totalResults}
           loader={<Spinner />}
         >
           <div className="container">
+
             <div className="row">
               {this.state.articles.map((element) => {
                 return (
