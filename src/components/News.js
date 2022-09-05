@@ -19,6 +19,7 @@ export class News extends Component {
     apikey: PropTypes.string.isRequired,
   };
 
+  
   constructor(props) {
     super(props);
     this.state = {
