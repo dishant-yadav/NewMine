@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import NewsItem from "./NewsItem";
 import Spinner from "./Spinner";
-import logo from "./logo.png";
+import logo from "./no-image.jpeg";
 import PropTypes from "prop-types";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -30,7 +30,7 @@ const News = (props) => {
   useEffect(() => {
     updateNews();
   }, [])
-
+  
   const fetchMoreData = async () => {
     const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apikey}&page=${page + 1}&pageSize=${props.pageSize}`;
     setPage(page + 1);
@@ -44,7 +44,7 @@ const News = (props) => {
       <h1
         className="text-center"
         style={{
-          margin: "35px 0px",
+          margin: "90px 0 20px 0",
           textDecoration: "underline",
         }}
       >
